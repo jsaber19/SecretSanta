@@ -61,7 +61,6 @@ public class SantaList implements Iterable<Object>{
         {
             PrintWriter writer = new PrintWriter("santa-assignments.txt", "UTF-8");
             writer.println(SantasAssignments);
-            System.out.print("check");
             writer.close();
 
 
@@ -96,6 +95,7 @@ public class SantaList implements Iterable<Object>{
 
             head = newHead;
             tail = newTail;
+            tail.setNext(null);
         }
 
         else if (size == 1){
@@ -112,22 +112,23 @@ public class SantaList implements Iterable<Object>{
 
     }
 
+    // what austin showed us in class and https://stackoverflow.com/questions/4737841/urlencoder-not-able-to-translate-space-character
     public void sendEmails() throws IOException, URISyntaxException {
         Desktop desktop = getDesktop();
 
         for (ListNode node = head; node != null; node = node.getNext()){
             if (node.getNext() == null){
                 String to = URLEncoder.encode(node.getEmail(), "UTF-8");
-                String subject = URLEncoder.encode("Your Secret Santa Assignment", "UTF-8");
-                String body = URLEncoder.encode("Please send a gift to " + head.getValue(), "UTF-8");
+                String subject = URLEncoder.encode("Your Secret Santa Assignment", "UTF-8").replace("+", "%20");
+                String body = URLEncoder.encode("Please send a gift to " + head.getValue() + ".", "UTF-8").replace("+", "%20");
 
                 String uriString = String.format("mailto:%s?subject=%s&body=%s", to, subject, body);
                 desktop.mail(new URI(uriString));
             }
             else {
                 String to = URLEncoder.encode(node.getEmail(), "UTF-8");
-                String subject = URLEncoder.encode("Your Secret Santa Assignment", "UTF-8");
-                String body = URLEncoder.encode("Please send a gift to " + node.getNext().getValue(), "UTF-8");
+                String subject = URLEncoder.encode("Your Secret Santa Assignment", "UTF-8").replace("+", "%20");
+                String body = URLEncoder.encode("Please send a gift to " + node.getNext().getValue() + ".", "UTF-8").replace("+", "%20");
 
                 String uriString = String.format("mailto:%s?subject=%s&body=%s", to, subject, body);
                 desktop.mail(new URI(uriString));
