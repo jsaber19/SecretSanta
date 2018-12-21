@@ -1,7 +1,13 @@
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import static java.awt.Desktop.getDesktop;
 
 public class SantaList implements Iterable<Object>{
     private ListNode head, tail;
@@ -55,6 +61,7 @@ public class SantaList implements Iterable<Object>{
         {
             PrintWriter writer = new PrintWriter("santa-assignments.txt", "UTF-8");
             writer.println(SantasAssignments);
+            System.out.print("check");
             writer.close();
 
 
@@ -103,6 +110,30 @@ public class SantaList implements Iterable<Object>{
             tail.setNext(null);
         }
 
+    }
+
+    public void sendEmails() throws IOException, URISyntaxException {
+        Desktop desktop = getDesktop();
+
+        for (ListNode node = head; node != null; node = node.getNext()){
+            if (node.getNext() == null){
+                String to = URLEncoder.encode(node.getEmail(), "UTF-8");
+                String subject = URLEncoder.encode("Your Secret Santa Assignment", "UTF-8");
+                String body = URLEncoder.encode("Please send a gift to " + head.getValue(), "UTF-8");
+
+                String uriString = String.format("mailto:%s?subject=%s&body=%s", to, subject, body);
+                desktop.mail(new URI(uriString));
+            }
+            else {
+                String to = URLEncoder.encode(node.getEmail(), "UTF-8");
+                String subject = URLEncoder.encode("Your Secret Santa Assignment", "UTF-8");
+                String body = URLEncoder.encode("Please send a gift to " + node.getNext().getValue(), "UTF-8");
+
+                String uriString = String.format("mailto:%s?subject=%s&body=%s", to, subject, body);
+                desktop.mail(new URI(uriString));
+            }
+
+        }
     }
 
     public Iterator<Object> iterator() {

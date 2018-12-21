@@ -1,5 +1,6 @@
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class main {
@@ -26,9 +27,20 @@ public class main {
 
         SantaList santas = new SantaList(unrandomizedSantas);
 
-        System.out.println("When you're ready to generate Santas, please type 'go'");
-
-
+        System.out.println("When you're ready to generate Santas and send out assignments through email, please type 'go'");
         santas.generateSantas();
+
+        String cue = kb.next();
+        if (cue.equalsIgnoreCase("go")){
+            try {
+                santas.sendEmails();
+            }
+            catch (IOException ex) {
+
+            }
+            catch (URISyntaxException ex) {
+
+            }
+        }
     }
 }

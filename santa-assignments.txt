@@ -1,6 +1,5 @@
-The first line
+ja is giving to lo.
 lo is giving to ki.
-ki is giving to ja.
-ja is giving to bu.
-bu is giving to lo.
+ki is giving to bu.
+bu is giving to ja.
 
