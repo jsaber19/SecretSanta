@@ -68,7 +68,7 @@ public class SantaList implements Iterable<Object>{
             }
         }
 
-        // making the text file
+        // making the text file - Philip helped me here
         try
         {
             PrintWriter writer = new PrintWriter("santa-assignments.txt", "UTF-8");
