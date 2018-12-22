@@ -1,9 +1,11 @@
 public class ListNode {
+    // fields for next and previous nodes and name and email
     private Object value;
     private ListNode previous;
     private ListNode next;
     private String email;
 
+    // constructors
     public ListNode(Object v, String e){
         value = v;
         email = e;
@@ -18,6 +20,7 @@ public class ListNode {
         email = e;
     }
 
+    // getters
     public Object getValue() {
         return value;
     }
@@ -34,6 +37,7 @@ public class ListNode {
         return email;
     }
 
+    // setters
     public void setValue(Object value) {
         this.value = value;
     }

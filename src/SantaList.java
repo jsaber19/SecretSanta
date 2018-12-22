@@ -10,28 +10,36 @@ import java.util.NoSuchElementException;
 import static java.awt.Desktop.getDesktop;
 
 public class SantaList implements Iterable<Object>{
+    // fields to track size of list and the first and last elements of list
     private ListNode head, tail;
     public int size;
 
+    // constructor takes an arraylist of nodes that represent santas
     public SantaList(ArrayList<ListNode> santas){
         size = santas.size();
+        // can't have less than 1 santa
         if (santas.size()<1){
             throw new NoSuchElementException();
         }
+        // if 1 santa
         if (santas.size() == 1){
             head = santas.remove(0);
         }
+        // if 2 santas
         if (santas.size() == 2){
             head = santas.remove(0);
             tail = santas.remove(0);
             head.setNext(tail);
             tail.setPrevious(head);
         }
+        // if more than 2 santas
         if (santas.size() > 2){
+            // take care of head and tail first
             head = santas.remove(0);
             tail = santas.remove(santas.size()-1);
             tail.setPrevious(head);
 
+            // fill in everything in between
             while(!santas.isEmpty()){
                 ListNode temp = santas.remove(0);
                 temp.setPrevious(tail.getPrevious());
@@ -42,12 +50,15 @@ public class SantaList implements Iterable<Object>{
         }
     }
 
+    // generates santa assignments and writes them to a text file
     public void generateSantas(){
+        // shuffles santas
         shuffle();
 
+        // string that will be written to text file
         String SantasAssignments = "";
 
-
+        // adding the assignments to the string
         for (ListNode node = head; node!= null; node = node.getNext()){
             if (node.getNext() == null){
                 SantasAssignments += node.getValue() + " is giving to " + head.getValue() + ".\n";
@@ -57,6 +68,7 @@ public class SantaList implements Iterable<Object>{
             }
         }
 
+        // making the text file
         try
         {
             PrintWriter writer = new PrintWriter("santa-assignments.txt", "UTF-8");
@@ -69,22 +81,26 @@ public class SantaList implements Iterable<Object>{
         }
     }
 
+    // shuffle the list of santas by copying them to an arraylist and then remaking the list by drawing them randomly from the arraylist
     public void shuffle(){
+        // arraylist copy
         ArrayList temp = new ArrayList(size);
         for (ListNode node = head; node != null; node = node.getNext()){
             temp.add(node);
         }
 
-
+        // remaking list
         if (size > 2) {
             ListNode newHead = null;
             ListNode newTail = null;
 
+            // drawing head and tail randomly from arraylist
             newHead = (ListNode)temp.remove((int)(Math.random()*temp.size()));
             newTail = (ListNode)temp.remove((int)(Math.random()*temp.size()));
             newHead.setNext(newTail);
             newTail.setPrevious(newHead);
 
+            // filling in the rest of the list randomly as well
             while(!temp.isEmpty()){
                 ListNode curr = (ListNode)temp.remove((int)(Math.random()*temp.size()));
                 curr.setPrevious(newTail.getPrevious());
@@ -93,15 +109,19 @@ public class SantaList implements Iterable<Object>{
                 newTail.setPrevious(curr);
             }
 
+            // make the new list the actual list
             head = newHead;
             tail = newTail;
             tail.setNext(null);
         }
 
+        // nothing changes if only 1 santa
         else if (size == 1){
             head = (ListNode)temp.remove(0);
             tail = head;
         }
+
+        // reverses the order if there are 2 santas
         else if (size == 2){
             head = (ListNode)temp.remove(1);
             tail = (ListNode)temp.remove(0);
@@ -112,6 +132,7 @@ public class SantaList implements Iterable<Object>{
 
     }
 
+    // sends email to each of the santas telling them their assignment
     // what austin showed us in class and https://stackoverflow.com/questions/4737841/urlencoder-not-able-to-translate-space-character
     public void sendEmails() throws IOException, URISyntaxException {
         Desktop desktop = getDesktop();
@@ -137,6 +158,7 @@ public class SantaList implements Iterable<Object>{
         }
     }
 
+    // iterator and iterator class literally copied and pasted
     public Iterator<Object> iterator() {
         return new DLLIterator(head);
     }
@@ -162,6 +184,7 @@ public class SantaList implements Iterable<Object>{
         }
     }
 
+    // setters
     public void setHead(ListNode head){
         this.head = head;
     }

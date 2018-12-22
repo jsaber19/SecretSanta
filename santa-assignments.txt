@@ -1,5 +1,5 @@
-bu is giving to lo.
-lo is giving to ja.
+bu is giving to ja.
 ja is giving to ki.
-ki is giving to bu.
+ki is giving to lo.
+lo is giving to bu.
 
